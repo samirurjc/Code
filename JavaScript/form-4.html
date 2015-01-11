@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!-- This version uses "onload" property of "body" to load
+     a setup function once the body is loaded, ensuring that
+     elements in body are already defined.
+     Instead of using "this.value" to find out the current text
+     in the textbox, it uses "formElement.value", which needs
+     less magic.
+-->
+<html>
+   <head>
+     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+     <title>Duplicator (4)</title>
+
+     <script type="text/javascript" charset="utf-8">
+       // Set up function, to attach to onLoad
+       function setup () {
+         formElement = document.getElementById('text');
+         writeElement = document.getElementById('write');
+         formElement.addEventListener('input', handler);
+       }
+       // Handler function, to provide to addEventListener
+       handler = function (e) {
+          writeElement.innerHTML = formElement.value;
+       };
+     </script>
+   </head>
+   <body onload="setup()">
+     <form>
+       Text: <input type="text" id="text"/>
+     </form>
+     <p id="write"></p>
+   </body>
+</html>

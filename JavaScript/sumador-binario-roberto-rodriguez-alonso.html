@@ -1,0 +1,58 @@
+<!-- Roberto Rodriguez Alonso -->
+
+<html>
+<body>
+     <style type="text/css" media="screen">
+		body{
+			margin-left:2em;
+			margin-top:2em;
+		}
+		a{
+			padding:.4em;
+			margin-right: 0.5em;
+			border: outset #1E90FF;
+		}
+		#resultado{
+			padding:.4em;
+			border: inset #696969;
+		}
+    </style>
+	<script type="text/javascript" charset="utf-8">
+		function uno(){
+			var caja = document.getElementById('resultado');
+			caja.innerHTML= '1'
+		}
+		function cero(){
+			var caja = document.getElementById('resultado');
+			caja.innerHTML= '0'			
+		}
+		function mas(){
+			var op = document.getElementById('resultado');
+			OP=op.innerHTML
+			op.innerHTML=""
+			console.log(OP)
+		}
+		function suma (){
+		    var oper = document.getElementById('resultado');
+			if (oper.innerHTML == '')
+			{
+				res.innerHTML=''
+			}
+			else
+			{
+				oper=oper.innerHTML
+			    console.log(OP)
+				console.log(oper)
+			    OP = parseFloat(OP)
+			    oper = parseFloat(oper)
+			    var res = document.getElementById("resultado");
+				res.innerHTML= OP^oper;
+			}
+       };
+     </script>
+
+<p><a href = "javascript:uno()"> 1 </a><a href = "javascript:cero()"> 0 </a>
+<a href = "javascript:mas()"> + </a><a href = "javascript:suma()"> = </a></a><span id ="resultado"> </span></p>
+
+</body>
+</html>

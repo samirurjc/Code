@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+   <head>
+     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+     <title>Duplicator (2)</title>
+   </head>
+   <body>
+     <form>
+       Text: <input type="text" id="text"/>
+     </form>
+     <p id="write"></p>
+
+     <script type="text/javascript" charset="utf-8">
+       formElement = document.getElementById('text');
+       writeElement = document.getElementById('write');
+       // Handler function, to provide to addEventListener
+       handler = function (e) {
+          writeElement.innerHTML = this.value;
+       }
+       formElement.addEventListener('input', handler);
+     </script>
+   </body>
+</html>

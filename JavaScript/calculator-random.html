@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+   <head>
+     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+     <title>Simple calculator</title>
+     <script type="text/javascript" charset="utf-8">
+       function adder (optag, restag) {
+       var operation = document.getElementById(optag);
+       var operands = operation.innerHTML.split ("+");
+       var result = document.getElementById(restag);
+       var resultData = parseInt(operands[0]) + parseInt(operands[1]);
+       result.innerHTML = "= " + resultData;
+       }
+       function randomAdd (optag) {
+       var operation = document.getElementById(optag);
+       operation.innerHTML = Math.round(Math.random()*1000) + "+" +
+                             Math.round(Math.random()*1000)
+       }
+     </script>
+   </head>
+   <body>
+     <p>Adder... <span id='op'>5+3</span> <span id='result'></span> <a href="javascript:adder('op', 'result')">Add!</a></p>
+     <p><a href="javascript:randomAdd('op')">Give me another one!</a></p>
+   </body>
+</html>
