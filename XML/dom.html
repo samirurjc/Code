@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+    <script type="text/javascript" charset="utf-8">
+      function change()
+      {
+      document.getElementById('another').innerHTML = 'Changed!';
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Simple DOM demo</h1>
+    <p>First sentence</p>
+    <p id="sentence">Second sentence, with id "sentence"</p>
+    <p id="another"><a href="javascript:document.location.reload()">Another sentence, with id "another"</a></p>
+    <p>Text of the sentence with id "sentence":
+      <script type="text/javascript" charset="utf-8">
+	document.write(document.getElementById('sentence').innerHTML);
+      </script>
+    </p>
+    <p>Text of the second sentence:
+      <script type="text/javascript" charset="utf-8">
+	document.write(document.getElementsByTagName('p')[1].innerHTML);
+      </script>
+    </p>
+    <form>
+      <input type="button" onclick="change()" value="Change" />
+    </form>
+  </body>
+</html>

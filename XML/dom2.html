@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+    <script type="text/javascript" charset="utf-8">
+      function change()
+      {
+      var time = new Date();
+      var text = ["Changed! ", time.toString()].join(" ");
+      document.getElementById('another').innerHTML = text;
+      if (time.getSeconds() < 30)  {
+         text = "First half of a minute";
+      } else {
+         text = "Second half of a minute;"
+      }
+      document.getElementById('yetanother').innerHTML = text;
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Simple DOM demo</h1>
+    <p>First sentence</p>
+    <p id="sentence">Second sentence, with id "sentence"</p>
+    <p id="another"><a href="javascript:document.location.reload()">Another sentence, with id "another" (click to reload)</a></p>
+    <p id="yetanother">Third sentence (which is yet another sentence)</p>
+    <p>Text of the sentence with id "sentence":
+      <script type="text/javascript" charset="utf-8">
+	document.write(document.getElementById('sentence').innerHTML);
+      </script>
+    </p>
+    <p>Text of the third sentence:
+      <script type="text/javascript" charset="utf-8">
+	document.write(document.getElementsByTagName('p')[2].innerHTML);
+      </script>
+    </p>
+    <form>
+      <input type="button" onclick="change()" value="Change" />
+    </form>
+  </body>
+</html>
