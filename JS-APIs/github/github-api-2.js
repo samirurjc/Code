@@ -32,9 +32,6 @@ function getRepo() {
     var reponame = $("#repo").val();
     myrepo = github.getRepo(user, reponame);
     myrepo.show(showRepo);
-    myrepo.write('master', 'data.json', "Holita", "First", function(err) {
-	console.log (err)
-    });
 };
 
 function showRepo(error, repo) {
@@ -46,21 +43,31 @@ function showRepo(error, repo) {
 		      "<ul><li>Full name: " + repo.full_name + "</li>" +
 		      "<li>Description: " + repo.description + "</li>" +
 		      "<li>Created at: " + repo.created_at + "</li>" +
-		      "</ul><div id='jsondata' />")
+		      "</ul><button type='button' id='write'>" +
+		      "Write File!</button>" +
+		      "<div id='writefile' />");
 	console.log (repo.full_name, repo.description, repo.created_at);
-
-	var repojson = {"fullname": repo.full_name,
-			"description": repo.description,
-			"created_at": repo.created_at
-		       };
-//	repository.write('master', 'data.json', JSON.stringify (repojson),
-//			 'Repository data' + Date().toLocaleString(), 
-//			 function(err) {
-//			     console.log(err);
-//			     ("#jsondata").html(err);
-//			 });
-//	myrepo.write('master', 'data.json', "Hola", "First", function(err) {});
+	$("#write").click(writeFile);
     }
+};
+
+function writeFile() {
+    myrepo.write('master', 'datafile', 
+		 new Date().toLocaleString(),
+		 "Updating data", function(err) {
+		     console.log (err)
+		 });
+    $("#writefile").html("<button type='button' id='read'>" +
+			 "Read File!</button>" +
+			 "<div id='readfile' />");
+    $("#read").click(readFile);
+};
+
+function readFile() {
+    myrepo.read('master', 'datafile', function(err, data) {
+	console.log (err, data);
+	$("#readfile").html("<p>Contents:</p><p>" + data + "</p>");
+    });
 };
 
 $(document).ready(function() {
