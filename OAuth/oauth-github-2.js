@@ -49,7 +49,8 @@ function showRepo(error, repo) {
     } else {
 	repodata.html(repodataHTML);
 	console.log (repo.full_name, repo.description, repo.created_at);
-	$("#write").click(writeFile);
+	myrepo.contents('master', '', listFiles);
+//	$("#write").click(writeFile);
     }
 };
 
