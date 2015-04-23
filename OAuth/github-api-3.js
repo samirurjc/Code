@@ -72,7 +72,7 @@ function readFile() {
 
 $(document).ready(function() {
     hello.init({
-	github : "b8850fd99afc7dc48f2d"
+	github : "066ef56a5d1d7cf39a3a"
     },{
 	redirect_uri : 'redirect.html',
 	oauth_proxy : "https://auth-server.herokuapp.com/proxy"

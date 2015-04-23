@@ -1,0 +1,35 @@
+<!doctype html>
+
+<!--
+    Simple demos of OAuth
+-->
+
+<html lang="us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demos of OAuth</title>
+<!--    <link href="simple.css" rel="stylesheet"> -->
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="github.js"></script>
+    <script src="github-api.js"></script>
+  </head>
+  <body>
+    
+    <h1>Some demos of use of GitHub API</h1>
+
+    <ul>
+      <li><a href="github-api.html">Retrieve info about a repository</a>.</li>
+      <li><a href="github-api-2.html">Retrieve info about a repository, and write a file in it</a>.</li>
+    </ul>
+
+    <h2>Retrieving info about a repository</h2>
+
+    <div id="form">
+      <input type="text" name="token" value="" id="token" size="36" />
+      <button type="button">Grab token</button>
+      <div id="repoform"/>
+    </div>
+
+  </body>
+</html>
