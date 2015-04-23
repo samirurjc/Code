@@ -6,14 +6,6 @@ var repoHTML = "<input type='text' name='user' value='jgbarah' " +
     "id='repo' size='10' />" +
     "<button id='repobutton' type='button'>Grab repo data</button>" +
     "<div id='repodata'/>";
-var repodataHTML = "<p>Repo data:</p>" +
-    "<ul><li>Full name: " + repo.full_name + "</li>" +
-    "<li>Description: " + repo.description + "</li>" +
-    "<li>Created at: " + repo.created_at + "</li>" +
-    "</ul><button type='button' id='write'>" +
-    "Write File!</button>" +
-    "<div id='repocontents' />" +
-    "<div id='writefile' />"
 
 var github;
 var myrepo;
@@ -47,7 +39,14 @@ function showRepo(error, repo) {
     if (error) {
 	repodata.html("<p>Error code: " + error.error + "</p>");
     } else {
-	repodata.html(repodataHTML);
+	repodata.html("<p>Repo data:</p>" +
+		      "<ul><li>Full name: " + repo.full_name + "</li>" +
+		      "<li>Description: " + repo.description + "</li>" +
+		      "<li>Created at: " + repo.created_at + "</li>" +
+		      "</ul><button type='button' id='write'>" +
+		      "Write File!</button>" +
+		      "<div id='repocontents' />" +
+		      "<div id='writefile' />");
 	console.log (repo.full_name, repo.description, repo.created_at);
 	myrepo.contents('master', '', listFiles);
 //	$("#write").click(writeFile);
