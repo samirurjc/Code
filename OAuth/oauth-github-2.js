@@ -60,11 +60,14 @@ function listFiles(error, contents) {
     } else {
 	console.log(contents);
 	var files = [];
-	for (var i = 0, len = contents.length; i <= len; i++) {
+	for (var i = 0, len = contents.length; i < len; i++) {
 	    console.log(contents[i].name);
 	    files.push(contents[i].name);
 	};
 	console.log(files);
+	var filesHTML = "<ul><li>" + files.join("</li><li>") +
+	    "</li></ul>";
+	console.log(filesHTML);
     };
 }
 
