@@ -43,13 +43,10 @@ function showRepo(error, repo) {
 		      "<ul><li>Full name: " + repo.full_name + "</li>" +
 		      "<li>Description: " + repo.description + "</li>" +
 		      "<li>Created at: " + repo.created_at + "</li>" +
-		      "</ul><button type='button' id='write'>" +
-		      "Write File!</button>" +
-		      "<div id='repocontents' />" +
-		      "<div id='writefile' />");
+		      "</ul>" +
+		      "<div id='repocontents' />");
 	console.log (repo.full_name, repo.description, repo.created_at);
 	myrepo.contents('master', '', listFiles);
-//	$("#write").click(writeFile);
     }
 };
 
@@ -58,20 +55,31 @@ function listFiles(error, contents) {
     if (error) {
 	repocontents.html("<p>Error code: " + error.error + "</p>");
     } else {
-	console.log(contents);
 	var files = [];
 	for (var i = 0, len = contents.length; i < len; i++) {
-	    console.log(contents[i].name);
 	    files.push(contents[i].name);
 	};
-	console.log(files);
-	var filesHTML = "<ul><li>" + files.join("</li><li>") +
-	    "</li></ul>";
-	console.log(filesHTML);
+	repocontents.html("<p>Contents:</p>" +
+			  "<ul><li>" + files.join("</li><li>") +
+			  "</li></ul>" +
+			  "<input type='text' name='filename' " +
+			  "value='datafile' " +
+			  "id='filename' size='20' />" +
+			  "<input type='text' name='content' " +
+			  "value='Some content' " +
+			  "id='content' size='40' />" +
+			  "<button type='button' id='write'>" +
+			  "Write File!</button>" +
+			  "<div id='writefile' />"
+			 );
+	$("#write").click(writeFile);
     };
 }
 
 function writeFile() {
+    var filename = $("#filename").val();
+    var content = $("#content").val();
+//    myrepo.write('master', filename, content,
     myrepo.write('master', 'datafile', 
 		 new Date().toLocaleString(),
 		 "Updating data", function(err) {
@@ -84,8 +92,8 @@ function writeFile() {
 };
 
 function readFile() {
-    myrepo.read('master', 'datafile', function(err, data) {
-	console.log (err, data);
+    var filename = $("#file").val();
+    myrepo.read('master', filename, function(err, data) {
 	$("#readfile").html("<p>Contents:</p><p>" + data + "</p>");
     });
 };
@@ -95,7 +103,8 @@ $(document).ready(function() {
 	github : "066ef56a5d1d7cf39a3a"
     },{
 	redirect_uri : 'redirect.html',
-	oauth_proxy : "https://auth-server.herokuapp.com/proxy"
+	oauth_proxy : "https://auth-server.herokuapp.com/proxy",
+	scope : "publish_files",
     });
     access = hello("github");
     access.login({response_type: 'code'}).then( function(){
