@@ -9,27 +9,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Demos of OAuth</title>
-<!--    <link href="simple.css" rel="stylesheet"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="github.js"></script>
-    <script src="github-api.js"></script>
+    <script src="hello.all.min.js"></script>
+    <script src="oauth-github.js"></script>
   </head>
   <body>
     
-    <h1>Some demos of use of GitHub API</h1>
+    <h1>Some demos of OAuth</h1>
 
     <ul>
-      <li><a href="github-api.html">Retrieve info about a repository</a>.</li>
-      <li><a href="github-api-2.html">Retrieve info about a repository, and write a file in it</a>.</li>
+      <li><a href="oauth-github.html">Simple demo of OAuth with GitHub</a>.</li>
     </ul>
 
-    <h2>Retrieving info about a repository</h2>
+    <h2>Simple demo of OAuth with GitHub</h2>
 
-    <div id="form">
-      <input type="text" name="token" value="" id="token" size="36" />
-      <button type="button">Grab token</button>
-      <div id="repoform"/>
-    </div>
+    <div id="repoform"/>
 
   </body>
 </html>
