@@ -59,9 +59,12 @@ function listFiles(error, contents) {
 	repocontents.html("<p>Error code: " + error.error + "</p>");
     } else {
 	console.log(contents);
-	for (var i = 0, len = contents.lenght; i <= len; i++) {
+	var files = [];
+	for (var i = 0, len = contents.length; i <= len; i++) {
 	    console.log(contents[i].name);
+	    files.push(contents[i].name);
 	};
+	console.log(files);
     };
 }
 
