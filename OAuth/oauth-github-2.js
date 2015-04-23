@@ -48,7 +48,7 @@ function showRepo(error, repo) {
 		      "<div id='repocontents' />" +
 		      "<div id='writefile' />");
 	console.log (repo.full_name, repo.description, repo.created_at);
-	myrepo.contents('master', '', listFiles, true);
+	myrepo.contents('master', '', listFiles);
 //	$("#write").click(writeFile);
     }
 };
