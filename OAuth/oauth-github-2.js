@@ -60,41 +60,50 @@ function listFiles(error, contents) {
 	    files.push(contents[i].name);
 	};
 	repocontents.html("<p>Contents:</p>" +
-			  "<ul><li>" + files.join("</li><li>") +
+			  "<ul id='files'><li>" +
+			  files.join("</li><li>") +
 			  "</li></ul>" +
+			  "<div id='readwrite'>" +
 			  "<input type='text' name='filename' " +
 			  "value='datafile' " +
 			  "id='filename' size='20' />" +
-			  "<input type='text' name='content' " +
-			  "value='Some content' " +
-			  "id='content' size='40' />" +
 			  "<button type='button' id='write'>" +
 			  "Write File!</button>" +
-			  "<div id='writefile' />"
+			  "<button type='button' id='read'>" +
+			  "Read File!</button>" +
+			  " <span id='done' /><br/>" +
+			  "<textarea name='content' " +
+			  "id='content' rows='4' cols='40'>" +
+			  "Some content" +
+			  "</textarea></div>"
 			 );
+	$("#files li").click(selectFile);
 	$("#write").click(writeFile);
+	$("#read").click(readFile);
     };
 }
+
+function selectFile() {
+    element = $(this);
+    console.log (element);
+    $("#filename").val(element.text());
+};
 
 function writeFile() {
     var filename = $("#filename").val();
     var content = $("#content").val();
-//    myrepo.write('master', filename, content,
-    myrepo.write('master', 'datafile', 
-		 new Date().toLocaleString(),
+    myrepo.write('master', filename, content,
 		 "Updating data", function(err) {
-		     console.log (err)
+		     console.log (err);
 		 });
-    $("#writefile").html("<button type='button' id='read'>" +
-			 "Read File!</button>" +
-			 "<div id='readfile' />");
-    $("#read").click(readFile);
+    $("#done").html("Write done!");
 };
 
 function readFile() {
-    var filename = $("#file").val();
+    var filename = $("#filename").val();
     myrepo.read('master', filename, function(err, data) {
-	$("#readfile").html("<p>Contents:</p><p>" + data + "</p>");
+	$("#content").val(data);
+    $("#done").html("Read done!");
     });
 };
 

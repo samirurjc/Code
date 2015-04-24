@@ -45,9 +45,12 @@ function showRepo(error, repo) {
 		      "<li>Created at: " + repo.created_at + "</li>" +
 		      "</ul><button type='button' id='write'>" +
 		      "Write File!</button>" +
-		      "<div id='writefile' />");
+		      "<button type='button' id='read'>" +
+		      "Read File!</button>" +
+		      "<div id='readfile' />");
 	console.log (repo.full_name, repo.description, repo.created_at);
 	$("#write").click(writeFile);
+	$("#read").click(readFile);
     }
 };
 
@@ -57,10 +60,6 @@ function writeFile() {
 		 "Updating data", function(err) {
 		     console.log (err)
 		 });
-    $("#writefile").html("<button type='button' id='read'>" +
-			 "Read File!</button>" +
-			 "<div id='readfile' />");
-    $("#read").click(readFile);
 };
 
 function readFile() {
