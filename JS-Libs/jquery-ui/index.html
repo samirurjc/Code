@@ -8,9 +8,9 @@
   <head>
     <meta charset="utf-8">
     <title>Test</title>
-    <link href="css/ui-lightness/jquery-ui-1.10.2.custom.min.css" rel="stylesheet">
-    <script src="js/jquery-1.9.1.js"></script>
-    <script src="js/jquery-ui-1.10.2.custom.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="demos.js"></script>
     <link href="demos.css" rel="stylesheet">
   </head>
@@ -28,15 +28,16 @@
     </div>
 
     <ul id="menu">
-      <li><a href="#">This one</a></li>
-      <li><a href="#">Another</a></li>
-      <li><a href="#">Third</a>
-	<ul>
-	  <li>First in submenu</li>
-	  <li>Second</li>
-	  <li>Third</li>
-	</ul>
+      <li>This one</li>
+      <li class="ui-state-disabled">Another</li>
+      <li>Third
+        <ul>
+          <li>First in submenu</li>
+          <li>Second</li>
+          <li>Third</li>
+        </ul>
       </li>
+      <li class="ui-state-disabled">This one, disabled</li>
     </ul>
 
     <p>Date: <input type="text" id="datepicker" /></p>
