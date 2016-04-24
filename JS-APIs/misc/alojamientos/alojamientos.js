@@ -21,7 +21,7 @@ function show_accomodation(){
 	 .openPopup();
   map.setView([lat, lon], 15);
   $('#desc').html('<h2>' + name + '</h2>'
-   + '<p>Type: ' + cat + ', subkind: ' + subcat + '</p>'
+   + '<p>Type: ' + cat + ', subtype: ' + subcat + '</p>'
    + desc + '<img src="' + img + '"">');
 };
 
