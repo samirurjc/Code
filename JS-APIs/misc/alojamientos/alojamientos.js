@@ -2,6 +2,8 @@
 // JSON file with accomodations is an adaption of the XML file
 // with accomodations in Madrid from the open data portal of
 // Ayuntamiento de Madrid (as of April 2016)
+// Simple version. Doesn't work well if some of the fields are not defined.
+// (for example, if there are no pictures)
 //
 function show_accomodation(){
   var accomodation = accomodations[$(this).attr('no')];
@@ -9,6 +11,7 @@ function show_accomodation(){
   var lon = accomodation.geoData.longitude;
   var url = accomodation.basicData.web;
   var name = accomodation.basicData.name;
+  var desc = accomodation.basicData.body;
   var img = accomodation.multimedia.media[0].url;
   var cat = accomodation.extradata.categorias.categoria.item[1]['#text'];
   var subcat = accomodation.extradata.categorias.categoria
@@ -28,7 +31,7 @@ function get_accomodations(){
     accomodations = data.serviceList.service
     $('#list').after('<h1>' + accomodations.length + '</h1>');
     var list = '<p>Accomodations found: ' + accomodations.length
-     + '(click on any of them for details and location in the map)</p>'
+     + ' (click on any of them for details and location in the map)</p>'
     list = list + '<ul>'
     for (var i = 0; i < accomodations.length; i++) {
       list = list + '<li no=' + i + '>' + accomodations[i].basicData.title + '</li>';
