@@ -13,8 +13,8 @@
             'http://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Darvasa_gas_crater_panorama_crop.jpg/320px-Darvasa_gas_crater_panorama_crop.jpg',
             'http://upload.wikimedia.org/wikipedia/commons/thumb/9/99/James_Webb_Space_Telescope_Mirror37.jpg/320px-James_Webb_Space_Telescope_Mirror37.jpg'
           ]
-          element = document.getElementById('tag');
-          photoURL = photos[Math.floor(Math.random()*photos.length)]
+          var element = document.getElementById('tag');
+          var photoURL = photos[Math.floor(Math.random()*photos.length)]
           element.innerHTML = '<img src="' + photoURL + '">';
        }
      </script>
