@@ -6,9 +6,12 @@ $(document).ready(function() {
     var map = L.map('map');
     // Set the view to current location
     map.setView([40.2838, -3.8215], 15);
-    // Add a MapQuest map
-    L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
-	attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'
+    L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
+    	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    	subdomains: 'abcd',
+    	minZoom: 1,
+    	maxZoom: 16,
+    	ext: 'png'
     }).addTo(map);
 
     // Define one GeoJSON feature

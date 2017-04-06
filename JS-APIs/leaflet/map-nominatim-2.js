@@ -2,7 +2,7 @@
 
 function addrSearch() {
     var inp = document.getElementById("addr");
-    
+
     $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + inp.value, function(data) {
 	var items = [];
 	coords = [];
@@ -38,7 +38,7 @@ function removeResults() {
 
 function chooseAddr() {
     var coord = coords[$(this).index()];
-		       
+
     var location = new L.LatLng(coord.lat, coord.lon);
     map.panTo(location);
 
@@ -55,14 +55,9 @@ $(document).ready(function() {
     $("div#search button").click(addrSearch);
     // Create a map in the "map" div
     map = L.map('map');
-    // Add an OpenStreetMap tile layer
-    // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    // attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    // }).addTo(map);
-    // Add a MapQuest map
-    L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
-	attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'
-    }).addTo(map);
+    L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+}).addTo(map);
 
     // Show lat and long at cliked (event) point, with a popup
     var popup = L.popup();

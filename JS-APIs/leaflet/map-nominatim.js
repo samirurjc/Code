@@ -2,7 +2,7 @@
 
 function addrSearch() {
     var inp = document.getElementById("addr");
-    
+
     $.getJSON('http://nominatim.openstreetmap.org/search?format=json&limit=5&q=' + inp.value, function(data) {
 	var items = [];
 
@@ -49,14 +49,9 @@ $(document).ready(function() {
     $("div#search button").click(addrSearch);
     // Create a map in the "map" div
     map = L.map('map');
-    // Add an OpenStreetMap tile layer
-    // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    // attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    // }).addTo(map);
-    // Add a MapQuest map
-    L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
-	attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png">'
-    }).addTo(map);
+    L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+}).addTo(map);;
 
     // Show lat and long at cliked (event) point, with a popup
     var popup = L.popup();
