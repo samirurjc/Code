@@ -44,7 +44,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         print("Received: GET " + self.path)
         parsed_resource = urllib.parse.urlparse(self.path)
-        print(parsed_resource)
+
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+
         you_said = ""
         if parsed_resource.query:
             qs = urllib.parse.parse_qs(parsed_resource.query)
@@ -52,9 +55,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
                 you_said = "You said: " + qs['something'][0]
                 cookie = http.cookies.SimpleCookie()
                 cookie['yousaid'] = qs['something'][0]
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.send_header("Set-Cookie", cookie.output(header='', sep=''))
+                self.send_header("Set-Cookie", cookie.output(header='', sep=''))
+
         self.end_headers()
         self.wfile.write(bytes(PAGE.format(you_said), 'utf-8'))
 
