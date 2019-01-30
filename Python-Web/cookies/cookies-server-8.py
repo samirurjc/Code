@@ -17,7 +17,9 @@
 import argparse
 import http.server
 import http.cookies
+import random
 import socketserver
+import string
 import urllib
 
 PORT = 1234
@@ -28,14 +30,20 @@ PAGE = """
   <body>
     <p>Hello!</p>
     <form action="/" method="GET">
-      Say something: <input name="something" type="text" />
+      Say something: <input name="content" type="text" />
     <input type="submit" value="Submit" />
-    <p>{}</p>
-    <p>{}</p>
+    <p>Content in form: {content}.</p>
+    <p>Last content in form (from content cookie): {last_from_content}.</p>
+    <p>Last content in form (from id cookie): {last_from_id}.</p>
+    <p>Content cookie: {content_cookie}.</p>
+    <p>Id cookie: {id_cookie}.</p>
     </form>
   </body>
 </html>
 """
+
+# Dictionary for texts for each id
+text = {}
 
 def parse_args ():
     parser = argparse.ArgumentParser(description="Simple HTTP Server")
@@ -56,21 +64,46 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         cookies = http.cookies.SimpleCookie(self.headers.get('Cookie'))
 
-        in_cookie = ""
-        if 'yousaid' in cookies:
-            in_cookie = "In cookie: " + cookies['yousaid'].value
+        content_cookie = ""
+        if 'content' in cookies:
+            content_cookie = cookies['content'].value
+            last_from_content = content_cookie
+        else:
+            content_cookie = 'None'
+            last_from_content = 'None'
 
-        you_said = ""
+        if 'id' in cookies:
+            id_cookie = cookies['id'].value
+            id = id_cookie
+        else:
+            id_cookie = 'None'
+            id = ''.join(random.choices(string.ascii_lowercase + string.digits, k=32))
+            cookie = http.cookies.SimpleCookie()
+            cookie['id'] = id
+            self.send_header("Set-Cookie", cookie.output(header='', sep=''))
+
+        content = 'None'
         if parsed_resource.query:
             qs = urllib.parse.parse_qs(parsed_resource.query)
-            if 'something' in qs:
-                you_said = "You said: " + qs['something'][0]
+            if 'content' in qs:
+                content = qs['content'][0]
                 cookie = http.cookies.SimpleCookie()
-                cookie['yousaid'] = qs['something'][0]
+                cookie['content'] = content
                 self.send_header("Set-Cookie", cookie.output(header='', sep=''))
+                text[id] = content
+
+        if id in text:
+            last_from_id = text[id]
+        else:
+            last_from_id = 'None'
 
         self.end_headers()
-        self.wfile.write(bytes(PAGE.format(you_said, in_cookie), 'utf-8'))
+        self.wfile.write(bytes(PAGE.format(content=content,
+                                           last_from_content=last_from_content,
+                                           last_from_id=last_from_id,
+                                           content_cookie=content_cookie,
+                                           id_cookie=id_cookie),
+                               'utf-8'))
 
 def main():
     args = parse_args()

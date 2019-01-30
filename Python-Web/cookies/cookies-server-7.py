@@ -17,7 +17,9 @@
 import argparse
 import http.server
 import http.cookies
+import random
 import socketserver
+import string
 import urllib
 
 PORT = 1234
@@ -32,10 +34,15 @@ PAGE = """
     <input type="submit" value="Submit" />
     <p>{}</p>
     <p>{}</p>
+    <p>{}</p>
+    <p>{}</p>
     </form>
   </body>
 </html>
 """
+
+# Dictionary for texts for each id
+text = {}
 
 def parse_args ():
     parser = argparse.ArgumentParser(description="Simple HTTP Server")
@@ -56,21 +63,38 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         cookies = http.cookies.SimpleCookie(self.headers.get('Cookie'))
 
-        in_cookie = ""
+        yousaid_cookie = ""
         if 'yousaid' in cookies:
-            in_cookie = "In cookie: " + cookies['yousaid'].value
+            yousaid_cookie = "Cookie (yousaid): " + cookies['yousaid'].value
 
-        you_said = ""
+        id_text = ""
+        if 'id' in cookies:
+            id = cookies['id'].value
+            id_text = "Cookie (id): " + id
+        else:
+            id = ''.join(random.choices(string.ascii_lowercase + string.digits, k=32))
+            cookie = http.cookies.SimpleCookie()
+            cookie['id'] = id
+            self.send_header("Set-Cookie", cookie.output(header='', sep=''))
+
+        yousaid_text = ""
         if parsed_resource.query:
             qs = urllib.parse.parse_qs(parsed_resource.query)
             if 'something' in qs:
-                you_said = "You said: " + qs['something'][0]
+                you_said = qs['something'][0]
+                yousaid_text = "You said: " + you_said
                 cookie = http.cookies.SimpleCookie()
-                cookie['yousaid'] = qs['something'][0]
+                cookie['yousaid'] = you_said
                 self.send_header("Set-Cookie", cookie.output(header='', sep=''))
+                text[id] = you_said
+
+        yousaid_id = ""
+        if id in text:
+            yousaid_id = "Last text in form (from id): " + text[id]
 
         self.end_headers()
-        self.wfile.write(bytes(PAGE.format(you_said, in_cookie), 'utf-8'))
+        self.wfile.write(bytes(PAGE.format(yousaid_text, yousaid_cookie, id_text, yousaid_id),
+                               'utf-8'))
 
 def main():
     args = parse_args()
