@@ -73,10 +73,9 @@ class Handler(http.server.BaseHTTPRequestHandler):
             payload = self.rfile.read(length_payload).decode("utf-8")
             qs = urllib.parse.parse_qs(payload,
                                        keep_blank_values=True)
-            print(qs)
             if 'content' in qs:
                 content = qs['content'][0]
-                last_content = content
+                self.last_content = content
                 cookie = http.cookies.SimpleCookie()
                 cookie['content'] = content
                 self.send_header("Set-Cookie", cookie.output(header='', sep=''))
