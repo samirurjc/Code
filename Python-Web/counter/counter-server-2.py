@@ -10,7 +10,7 @@
 #
 # Important: Run with Python 3.6 or higher
 #
-# Counter version 1.
+# Counter version 2 (deals with overlapping browsers).
 
 import argparse
 import http.server
@@ -88,9 +88,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
 def main():
     args = parse_args()
-    with socketserver.TCPServer(("", args.port), Handler) as MyServer:
-        print("serving at port", args.port)
-        MyServer.serve_forever()
+    try:
+        with socketserver.TCPServer(("", args.port), Handler) as MyServer:
+            print("Serving at port", args.port)
+            MyServer.serve_forever()
+    except KeyboardInterrupt:
+        print("Finishing...")
 
 if __name__ == "__main__":
     main()
