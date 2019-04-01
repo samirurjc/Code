@@ -17,10 +17,9 @@ html_template = """<!DOCTYPE html>
 
 item_page_template = """<p><a href="/">Full shopping list</a></p>
 <h2>Item: {name}</h2>
-<p>Quantity to shop: {quantity}</p>
 <form action="/{name}" method="POST">
-  New quantity: <input name="value" type="number" />
-  <input type="submit" value="Submit" />
+  Quantity to shop: <input name="value" type="number" value="{quantity}"/>
+  <input type="submit" value="Change" />
   <input type="hidden" name="csrfmiddlewaretoken" value="{token}" />
 </form>
 """
