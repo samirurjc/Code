@@ -19,10 +19,13 @@ html_item_template = "<li><a href='{name}'>{name}</a></li>"
 def index(request):
 
     pages = Page.objects.all()
-    body = "<ul>"
-    for p in pages:
-        body += html_item_template.format(name=p.name)
-    body += "</ul>"
+    if len(pages) == 0:
+        body = "No pages yet."
+    else:
+        body = "<ul>"
+        for p in pages:
+            body += html_item_template.format(name=p.name)
+        body += "</ul>"
     return(HttpResponse(html_template.format(body=body)))
 
 @csrf_exempt
