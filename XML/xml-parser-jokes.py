@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 #
 # Simple XML parser for JokesXML
@@ -16,7 +16,7 @@ import string
 
 def normalize_whitespace(text):
     "Remove redundant whitespace from a string"
-    return string.join(string.split(text), ' ')
+    return " ".join(text.split())
 
 class CounterHandler(ContentHandler):
 
@@ -27,7 +27,7 @@ class CounterHandler(ContentHandler):
     def startElement (self, name, attrs):
         if name == 'joke':
             self.title = normalize_whitespace(attrs.get('title'))
-            print " title: " + self.title + "."
+            print(" title: " + self.title + ".")
         elif name == 'start':
             self.inContent = 1
         elif name == 'end':
@@ -37,11 +37,11 @@ class CounterHandler(ContentHandler):
         if self.inContent:
             self.theContent = normalize_whitespace(self.theContent)
         if name == 'joke':
-            print ""
+            print()
         elif name == 'start':
-            print "  start: " + self.theContent + "."
+            print("  start: " + self.theContent + ".")
         elif name == 'end':
-            print "  end: " + self.theContent + "."
+            print ("  end: " + self.theContent + ".")
         if self.inContent:
             self.inContent = 0
             self.theContent = ""
@@ -53,9 +53,9 @@ class CounterHandler(ContentHandler):
 # --- Main prog
 
 if len(sys.argv)<2:
-    print "Usage: python xml-parser-jokes.py <document>"
-    print
-    print " <document>: file name of the document to parse"
+    print("Usage: python xml-parser-jokes.py <document>")
+    print()
+    print(" <document>: file name of the document to parse")
     sys.exit(1)
     
 # Load parser and driver
@@ -69,4 +69,4 @@ JokeParser.setContentHandler(JokeHandler)
 xmlFile = open(sys.argv[1],"r")
 JokeParser.parse(xmlFile)
 
-print "Parse complete"
+print("Parse complete")

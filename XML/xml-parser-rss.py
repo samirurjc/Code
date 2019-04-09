@@ -11,6 +11,7 @@
 # Just prints the news (and urls) in BarraPunto.com,
 #  after reading the corresponding RSS channel.
 
+from urllib.request import urlopen
 from xml.sax.handler import ContentHandler
 from xml.sax import make_parser
 import sys
@@ -55,7 +56,9 @@ class myContentHandler(ContentHandler):
 if len(sys.argv)<2:
     print("Usage: python xml-parser-barrapunto.py <document>")
     print()
-    print(" <document>: file name of the document to parse")
+    print(" <document>: url of the document to parse")
+    print("             Examples: http://barrapunto.com/index.rss")
+    print("                       http://ep00.epimg.net/rss/elpais/portada.xml")
     sys.exit(1)
     
 # Load parser and driver
@@ -66,7 +69,7 @@ theParser.setContentHandler(theHandler)
 
 # Ready, set, go!
 
-xmlFile = open(sys.argv[1],"r", encoding="utf-8")
-theParser.parse(xmlFile)
+xmlDoc = urlopen(sys.argv[1])
+theParser.parse(xmlDoc)
 
 print("Parse complete")
