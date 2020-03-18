@@ -1,13 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 #
 # webApp class
 # Root for hierarchy of classes implementing web applications
 #
-# Copyright Jesus M. Gonzalez-Barahona 2009
+# Copyright Jesus M. Gonzalez-Barahona 2009-2020
 # jgb @ gsyc.es
 # TSAI and SAT subjects (Universidad Rey Juan Carlos)
-# October 2009
 #
 
 import socket
@@ -23,6 +22,7 @@ class webApp:
     def parse (self, request):
         """Parse the received request, extracting the relevant information."""
 
+        print("Parse: Not parsing anything")
         return None
 
     def process (self, parsedRequest):
@@ -31,6 +31,7 @@ class webApp:
         Returns the HTTP code for the reply, and an HTML page.
         """
 
+        print("Process: Returning 200 OK")
         return ("200 OK", "<html><body><h1>It works!</h1></body></html>")
 
     def __init__ (self, hostname, port):
@@ -48,17 +49,18 @@ class webApp:
         # parse and process methods (in a loop)
 
         while True:
-            print 'Waiting for connections'
+            print("Waiting for connections")
             (recvSocket, address) = mySocket.accept()
-            print 'HTTP request received (going to parse and process):'
+            print("HTTP request received (going to parse and process):")
             request = recvSocket.recv(2048)
-            print request
-            parsedRequest = self.parse (request)
-            (returnCode, htmlAnswer) = self.process (parsedRequest)
-            print 'Answering back...'
-            recvSocket.send("HTTP/1.1 " + returnCode + " \r\n\r\n"
-                         + htmlAnswer + "\r\n")
+            print(request)
+            parsedRequest = self.parse(request.decode('utf8'))
+            (returnCode, htmlAnswer) = self.process(parsedRequest)
+            print("Answering back...")
+            response = "HTTP/1.1 " + returnCode + " \r\n\r\n" \
+                       + htmlAnswer + "\r\n"
+            recvSocket.send(response.encode('utf8'))
             recvSocket.close()
 
 if __name__ == "__main__":
-    testWebApp = webApp ("localhost", 1234)
+    testWebApp = webApp("localhost", 1234)

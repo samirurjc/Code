@@ -1,13 +1,12 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 #
 # addApp class
 # Simple web application for adding numbers in two rounds
 #
-# Copyright Jesus M. Gonzalez-Barahona 2009
+# Copyright Jesus M. Gonzalez-Barahona 2009-2020
 # jgb @ gsyc.es
 # TSAI and SAT subjects (Universidad Rey Juan Carlos)
-# October 2009
 #
 
 import webapp
@@ -35,16 +34,19 @@ class addApp (webapp.webApp):
         or second addend for the add.
         """
 
-        if resourceName == "favicon.ico":
+        try:
+            value = int(resourceName)
+        except ValueError:
+            # Not an integer, bad resource
             httpCode = "400 Resource not available"
-            htmlBody = "No favicons for now"
+            htmlBody = "Only resources accepted: integers"
         else:
             if self.firstRound:
-                self.addend1 = int(resourceName)
-                htmlBody = "Received " + resourceName + " as first addend. " \
+                self.addend1 = value
+                htmlBody = "Received " + str(value) + " as first addend. " \
                     + "Waiting for second addend to add..."
             else:
-                addend2 = int(resourceName)
+                addend2 = value
                 htmlBody = "Add done: " + str(self.addend1) + " + " \
                     + str(addend2) + " = " + str(self.addend1 + addend2)
             httpCode = "200 OK"

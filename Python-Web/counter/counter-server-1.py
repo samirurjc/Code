@@ -6,7 +6,7 @@
 # Jesus M. Gonzalez-Barahona
 # jgb @ gsyc.es
 # SARO and SAT subjects (Universidad Rey Juan Carlos)
-# February 2019
+# February 2019-2020
 #
 # Important: Run with Python 3.6 or higher
 #
