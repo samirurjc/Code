@@ -30,8 +30,6 @@ class CounterHandler(ContentHandler):
             self.inContent = True
             
     def endElement (self, name):
-        if self.inContent:
-            self.theContent = self.theContent
         if name == 'joke':
             print()
         elif name == 'start':
