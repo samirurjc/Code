@@ -7,39 +7,12 @@ from django.middleware.csrf import get_token
 from .ytchannel import YTChannel
 from . import data
 
-PAGE = """
-<!DOCTYPE html>
-<html lang="en">
-  <body>
-    <h1>Selected</h1>
-      <ul>
-      {selected}
-      </ul>
-    <h1>Selectable</h1>
-      <ul>
-      {selectable}
-      </ul>
-  </body>
-</html>
-"""
-
-VIDEO = """
-      <li>
-        <form action='/' method='post'>
-          <a href='{link}'>{title}</a>
-          <input type='hidden' name='id' value='{id}'>
-          <input type='hidden' name='csrfmiddlewaretoken' value='{token}'>
-          <input type='hidden' name='{name}' value='True'> 
-          <input type='submit' value='{action}'>
-        </form>
-      </li>
-"""
 
 def build_html(name, list, action, token):
 
     html = ""
     for video in list:
-        html = html + VIDEO.format(link=video['link'],
+        html = html + data.VIDEO.format(link=video['link'],
                                    title=video['title'],
                                    id=video['id'],
                                    name=name,
@@ -71,10 +44,10 @@ def main(request):
                            to_list=data.selectable,
                            id=request.POST['id'])
     csrf_token = get_token(request)
-    print("Selectable:", data.selectable)
     selected = build_html(name='deselect', list=data.selected,
                           action='Deselect', token=csrf_token)
     selectable = build_html(name='select', list=data.selectable,
                             action='Select', token=csrf_token)
-    htmlBody = PAGE.format(selected=selected, selectable=selectable)
+    htmlBody = data.PAGE.format(selected=selected,
+                                selectable=selectable)
     return HttpResponse(htmlBody)
