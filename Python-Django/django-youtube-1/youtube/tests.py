@@ -1,11 +1,11 @@
 
-import sys
+from django.test import TestCase, SimpleTestCase
 
-from django.test import TestCase
-
+from . import views
 from .ytchannel import YTChannel
 
-class TestParser(TestCase):
+class TestYTChannel(TestCase):
+    """Tests of YTChannel"""
 
     def setUp(self):
         self.simpleFile = 'youtube/testdata/youtube.xml'
@@ -51,3 +51,47 @@ class TestParser(TestCase):
         videos = channel.videos()
         self.assertEqual(len(videos), 1)
         self.assertEqual(videos, self.expected[0:1])
+
+
+class TestViewsMain(SimpleTestCase):
+    """Tests of main method in views"""
+
+    def setUp(self):
+        # Id known to be in the list of videos of the channel
+        self.id = 'uBuldIyTo8I'
+
+    def test_get_ok(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view(self):
+        response = self.client.get('/')
+        self.assertEqual(response.resolver_match.func, views.main)
+
+    def test_get_content(self):
+        checks = ["<h1>Django YouTube (version 1)</h1>",
+                  "<h2>Selected</h2>",
+                  "<h2>Selectable</h2>",
+                  "<input type='hidden' name='id' value='TKjYnkGGQxs'>"]
+        response = self.client.get('/')
+        content = response.content.decode(encoding='UTF-8')
+        for check in checks:
+            self.assertInHTML(check, content)
+
+    def test_post_ok(self):
+        response = self.client.post('/', {'id': self.id})
+        self.assertEqual(response.status_code, 200)
+
+    def test_getpost(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post('/', {'id': self.id})
+        self.assertEqual(response.status_code, 200)
+
+    def test_getpost(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post('/', {'id': self.id})
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post('/', {'id': self.id})
+        self.assertEqual(response.status_code, 200)
