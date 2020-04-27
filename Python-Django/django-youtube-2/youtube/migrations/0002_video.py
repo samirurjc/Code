@@ -5,8 +5,6 @@ import urllib.request
 from django.db import migrations
 
 from ..ytchannel import YTChannel
-from .. import data
-
 
 def read_channel(apps, schema_editor):
     # Note we need to import the model from the historical version,
