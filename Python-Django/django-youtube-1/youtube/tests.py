@@ -4,7 +4,7 @@ from django.test import TestCase, SimpleTestCase
 from . import views
 from .ytchannel import YTChannel
 
-class TestYTChannel(TestCase):
+class TestYTChannel(SimpleTestCase):
     """Tests of YTChannel"""
 
     def setUp(self):

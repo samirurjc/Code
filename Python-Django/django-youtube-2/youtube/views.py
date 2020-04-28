@@ -1,10 +1,8 @@
 """Views for YouTube app
 """
 from django.http import HttpResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.middleware.csrf import get_token
 
-from .ytchannel import YTChannel
 from . import models
 
 PAGE = """

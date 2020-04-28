@@ -4,7 +4,7 @@ from django.test import TestCase, SimpleTestCase
 from . import views
 from .ytchannel import YTChannel
 
-class TestYTChannel(TestCase):
+class TestYTChannel(SimpleTestCase):
     """Tests of YTChannel"""
 
     def setUp(self):
@@ -53,7 +53,7 @@ class TestYTChannel(TestCase):
         self.assertEqual(videos, self.expected[0:1])
 
 
-class TestViewsMain(SimpleTestCase):
+class TestViewsMain(TestCase):
     """Tests of main method in views"""
 
     def setUp(self):
@@ -69,7 +69,7 @@ class TestViewsMain(SimpleTestCase):
         self.assertEqual(response.resolver_match.func, views.main)
 
     def test_get_content(self):
-        checks = ["<h1>Django YouTube (version 1)</h1>",
+        checks = ["<h1>Django YouTube (version 2)</h1>",
                   "<h2>Selected</h2>",
                   "<h2>Selectable</h2>",
                   "<input type='hidden' name='id' value='TKjYnkGGQxs'>"]

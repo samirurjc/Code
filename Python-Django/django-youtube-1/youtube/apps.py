@@ -8,8 +8,6 @@ class YouTubeConfig(AppConfig):
     name = 'youtube'
 
     def ready(self):
-        global videos
-
         url = 'https://www.youtube.com/feeds/videos.xml?channel_id=' \
             + 'UC300utwSVAYOoRLEqmsprfg'
         xmlStream = urllib.request.urlopen(url)
