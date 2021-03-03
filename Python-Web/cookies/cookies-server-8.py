@@ -22,9 +22,9 @@ import socketserver
 import string
 import urllib
 
-PORT = 1234
+PORT: int = 1234
 
-PAGE = """
+PAGE: str = """
 <!DOCTYPE html>
 <html lang="en">
   <body>
@@ -43,9 +43,9 @@ PAGE = """
 """
 
 # Dictionary for texts for each id
-text = {}
+text: dict = {}
 
-def parse_args ():
+def parse_args () -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Simple HTTP Server")
     parser.add_argument('-p', '--port', type=int, default=PORT,
                         help="TCP port for the server")
@@ -54,7 +54,7 @@ def parse_args ():
 
 class Handler(http.server.BaseHTTPRequestHandler):
 
-    def do_GET(self):
+    def do_GET(self) -> None:
 
         print("Received: GET " + self.path)
         parsed_resource = urllib.parse.urlparse(self.path)
@@ -64,7 +64,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         cookies = http.cookies.SimpleCookie(self.headers.get('Cookie'))
 
-        content_cookie = ""
+        content_cookie: str = ""
+        last_from_cookie: str = ""
         if 'content' in cookies:
             content_cookie = cookies['content'].value
             last_from_content = content_cookie
@@ -72,6 +73,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
             content_cookie = 'None'
             last_from_content = 'None'
 
+        id_cookie: str
+        id: str
         if 'id' in cookies:
             id_cookie = cookies['id'].value
             id = id_cookie
@@ -84,7 +87,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
         content = 'None'
         if parsed_resource.query:
-            qs = urllib.parse.parse_qs(parsed_resource.query)
+            qs: str = urllib.parse.parse_qs(parsed_resource.query)
             if 'content' in qs:
                 content = qs['content'][0]
                 cookie = http.cookies.SimpleCookie()
@@ -105,8 +108,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
                                            id_cookie=id_cookie),
                                'utf-8'))
 
-def main():
-    args = parse_args()
+def main() -> None:
+    args: argparse.Namespace = parse_args()
     with socketserver.TCPServer(("", args.port), Handler) as MyServer:
         print("serving at port", args.port)
         MyServer.serve_forever()

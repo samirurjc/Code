@@ -23,9 +23,9 @@ import socketserver
 import string
 import urllib
 
-PORT = 1234
+PORT: int = 1234
 
-PAGE = """
+PAGE: str = """
 <!DOCTYPE html>
 <html lang="en">
   <body>
@@ -40,9 +40,9 @@ PAGE = """
 """
 
 # Dictionary for texts for each id
-text = {}
+text: dict = {}
 
-def parse_args ():
+def parse_args () -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Simple HTTP Server")
     parser.add_argument('-p', '--port', type=int, default=PORT,
                         help="TCP port for the server")
