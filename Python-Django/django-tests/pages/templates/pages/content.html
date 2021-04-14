@@ -1,0 +1,11 @@
+{% extends "pages/main.html" %}
+
+{% block content %}
+<p>[<a href="/">Main page</a>]</p>
+
+<form action="/{{page}}" method="post">
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="Submit">
+</form>
+{% endblock %}
