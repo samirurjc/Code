@@ -6,6 +6,7 @@
 # jgb @ gsyc.es
 # TSAI and SAT subjects (Universidad Rey Juan Carlos)
 # September 2009
+# Febraury 2022
 #
 # Returns an HTML page with a random link
 
@@ -21,7 +22,7 @@ import random
 myPort = 1234
 mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mySocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-mySocket.bind(('localhost', myPort))
+mySocket.bind(('', myPort))
 
 # Queue a maximum of 10 TCP connection requests
 
@@ -36,10 +37,10 @@ random.seed()
 #  (in a loop)
 try:
 	while True:
-		print 'Waiting for connections'
+		print("Waiting for connections")
 		(recvSocket, address) = mySocket.accept()
-		print 'HTTP request received:'
-		print recvSocket.recv(1024)
+		print("HTTP request received:")
+		print(recvSocket.recv(2048))
 
 		# Resource name for next url
 		nextPage = str (random.randint (0,10000))
@@ -47,11 +48,11 @@ try:
 		# HTML body of the page to serve
 		htmlBody = "<h1>It works!</h1>" + '<p>Next page: <a href="' \
 		    + nextUrl + '">' + nextPage + "</a></p>"
-		recvSocket.send("HTTP/1.1 200 OK \r\n\r\n" +
-				"<html><body>" + htmlBody + "</body></html>" +
-				"\r\n")
+		recvSocket.send(b"HTTP/1.1 200 OK \r\n\r\n" +
+				b"<html><body>" + htmlBody.encode('ascii') + b"</body></html>" +
+				b"\r\n")
 		recvSocket.close()
 
 except KeyboardInterrupt:
-	print "Closing binded socket"
+	print("Closing binded socket")
 	mySocket.close()

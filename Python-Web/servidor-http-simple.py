@@ -7,9 +7,14 @@
 # TSAI and SAT subjects (Universidad Rey Juan Carlos)
 # September 2010
 # September 2009
-#
+# Febraury 2022
+
 
 import socket
+
+response = "HTTP/1.1 200 OK\r\n\r\n" \
+		+ "<html><body><h1>Hello World!</h1></body></html>" \
+		+ "\r\n"
 
 # Create a TCP objet socket and bind it to a port
 # We bind to 'localhost', therefore only accepts connections from the
@@ -28,11 +33,10 @@ mySocket.listen(5)
 #  (in a loop)
 
 while True:
-    print 'Waiting for connections'
+    print("Waiting for connections")
     (recvSocket, address) = mySocket.accept()
-    print 'HTTP request received:'
-    print recvSocket.recv(1024)
-    recvSocket.send("HTTP/1.1 200 OK\r\n\r\n" +
-		    "<html><body><h1>Hello World!</h1></body></html>" +
-		    "\r\n")
+    print("HTTP request received:")
+    received = recvSocket.recv(2048)
+    print(received)
+    recvSocket.send(response.encode('utf-8'))
     recvSocket.close()
