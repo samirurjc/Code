@@ -10,7 +10,8 @@
 #
 # Important: Run with Python 3.6 or higher
 #
-# Counter version 1.
+# Counter version 1-browser.
+# This version returns different content depending on the browser.
 
 import argparse
 import http.server
@@ -41,9 +42,6 @@ PAGE_NOT_FOUND = """
 </html>
 """
 
-# Variable for storing current count
-count = 5
-
 def parse_args ():
     parser = argparse.ArgumentParser(description="Simple HTTP Server")
     parser.add_argument('-p', '--port', type=int, default=PORT,
@@ -53,25 +51,41 @@ def parse_args ():
 
 class Handler(http.server.BaseHTTPRequestHandler):
 
+    # Class variable for storing current count
+    # Note: class variables are shared by all objects of the class
+    #       needed because Handler is instantiated every time a new
+    #       request is received
+    count = 5
+
     def do_GET(self):
 
-        global count
         resource = self.path
-
-        if resource == '/':
-            self.send_response(200)
-            page = PAGE.format(count=count)
-            count = (count-1) % 6
+        browser = self.headers.get('User-Agent')
+        if browser.startswith('curl/'):
+            if resource == '/':
+                self.send_response(200)
+                page = f"{Handler.count}\r\n"
+                Handler.count = (Handler.count-1) % 6
+            else:
+                self.send_response(404)
+                page = f"Page not found: {resource}\r\n"
+            self.send_header("Content-type", "text/plain")
         else:
-            self.send_response(404)
-            page = PAGE_NOT_FOUND.format(resource=resource)
+            if resource == '/':
+                self.send_response(200)
+                page = PAGE.format(count=Handler.count)
+                Handler.count = (Handler.count-1) % 6
+            else:
+                self.send_response(404)
+                page = PAGE_NOT_FOUND.format(resource=resource)
+            self.send_header("Content-type", "text/html")
 
-        self.send_header("Content-type", "text/html")
         self.end_headers()
         self.wfile.write(bytes(page, 'utf-8'))
 
 def main():
     args = parse_args()
+    Handler.count = 5
     try:
         with socketserver.TCPServer(("", args.port), Handler) as MyServer:
             print("serving at port", args.port)

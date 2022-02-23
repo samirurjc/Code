@@ -21,25 +21,18 @@ response = "HTTP/1.1 301 Moved Permanently\r\n" \
 # Port should be 80, but since it needs root privileges,
 # let's use one above 1024
 
-mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-mySocket.bind(('', 1234))
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as mySocket:
+    mySocket.bind(('', 1234))
 
-# Queue a maximum of 5 TCP connection requests
+    # Queue a maximum of 5 TCP connection requests
+    mySocket.listen(5)
 
-mySocket.listen(5)
-
-# Accept connections, read incoming data, and answer back an HTLM page
-#  (in a loop)
-
-try:
+    # Accept connections, read incoming data, and answer back an HTLM page
+    #  (in a loop)
     while True:
         print("Waiting for connections")
         (recvSocket, address) = mySocket.accept()
-        print("HTTP request received:")
-        print(recvSocket.recv(2048))
-        recvSocket.send(response.encode('ascii'))
-        recvSocket.close()
-
-except KeyboardInterrupt:
-	print("Closing binded socket")
-	mySocket.close()
+        with recvSocket:
+            print("HTTP request received:")
+            print(recvSocket.recv(2048))
+            recvSocket.send(response.encode('ascii'))
