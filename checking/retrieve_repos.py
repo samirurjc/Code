@@ -26,6 +26,18 @@ def add_api (practices):
         practice['repo_api'] = practice['repo'].replace('/', '%2F')
 
 practices = {
+    "calculadora": {
+        'repo': 'cursosweb/x-serv-13.6-calculadora',
+        'repo_api': 'cursosweb%2Fx-serv-13.6-calculadora'
+    },
+    "redir": {
+        'repo': 'cursosweb/x-serv-15.4-aplicacion-redirectora',
+        'repo_api': 'cursosweb%2Fx-serv-15.4-aplicacion-redirectora',
+    },
+    "contentapp": {
+        'repo': 'cursosweb/xserv-contentapp',
+        'repo_api': 'cursosweb%2Fxserv-contentapp'
+    },
     "1": {
         'repo': 'cursosweb/mini-1-acortadora',
         'repo_api': 'cursosweb%2Fmini-1-acortadora'
@@ -46,7 +58,7 @@ def get_forks(repo: str, token: str = ''):
     headers = {}
     if token != '':
         headers['PRIVATE-TOKEN'] = token
-    print(headers)
+    # print(headers)
     req = urllib.request.Request(url=f"https://gitlab.etsit.urjc.es/api/v4/projects/{repo}/forks",
                                  headers=headers)
     contents = urllib.request.urlopen(req).read()
