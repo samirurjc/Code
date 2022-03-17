@@ -19,7 +19,7 @@ from shutil import copyfile
 from distutils.dir_util import copy_tree
 
 from git.repo.base import Repo
-
+from git.exc import GitCommandError
 
 def add_api (practices):
     for number, practice in practices.items():
@@ -55,20 +55,31 @@ def get_token() -> str:
         return ''
 
 def get_forks(repo: str, token: str = ''):
-    headers = {}
+    req_headers = {}
     if token != '':
-        headers['PRIVATE-TOKEN'] = token
-    # print(headers)
-    req = urllib.request.Request(url=f"https://gitlab.etsit.urjc.es/api/v4/projects/{repo}/forks",
-                                 headers=headers)
-    contents = urllib.request.urlopen(req).read()
-    contents_str = contents.decode('utf8')
-    return json.loads(contents_str)
+        req_headers['PRIVATE-TOKEN'] = token
+    # Pages are ints starting in 1, so these are just initialization values
+    this_page, total_pages = 1, None
+    forks = []
+    while (total_pages is None) or (this_page <= total_pages):
+        url = f"https://gitlab.etsit.urjc.es/api/v4/projects/{repo}/forks?per_page=50&page={this_page}"
+        req = urllib.request.Request(url=url, headers=req_headers)
+        with urllib.request.urlopen(req) as response:
+            contents = response.read()
+            resp_headers = response.info()
+            total_pages = int(resp_headers['x-total-pages'])
+            this_page += 1
+            contents_str = contents.decode('utf8')
+            forks = forks + json.loads(contents_str)
+    return forks
 
 def clone(url, dir, token=''):
     auth_url = url.replace('https://', f"https://Api Read Access:{token}@", 1)
     print("Cloning:", dir, auth_url)
-    Repo.clone_from(auth_url, dir)
+    try:
+        Repo.clone_from(auth_url, dir)
+    except GitCommandError as err:
+        print(f"Error: git error {err}")
 
 def read_csv(file):
     students = {}
@@ -117,7 +128,7 @@ def parse_args():
     parser.add_argument('--students', required=True,
                         help="name of csv file with students, exported from Moodle")
     parser.add_argument('--practice', default=2,
-                        help="practice number")
+                        help="practice number (:all: to retrieve all practices")
     parser.add_argument('--cloning_dir', default='retrieved',
                         help="directory for cloning retrieved practices")
     parser.add_argument('--testing_dir', default='/tmp/p',
@@ -125,17 +136,11 @@ def parse_args():
     args = parser.parse_args()
     return(args)
 
-if __name__ == "__main__":
-    args = parse_args()
-    practice_id = args.practice
+def retrieve_practice(practice_id, cloning_dir, token):
     practice = practices[practice_id]
-    testing_dir = args.testing_dir
-    cloning_dir = args.cloning_dir
-    token: str = get_token()
-
     forks = get_forks(repo=practice['repo_api'], token=token)
     repos_found = 0
-#    print(forks)
+    #    print(forks)
 
     students = read_csv(args.students)
 
@@ -159,3 +164,18 @@ if __name__ == "__main__":
         #           solved_dir=practice['solved_dir'],
         #           silent=args.silent)
     print(f"Total forks: {len(forks)}, repos found: {repos_found}")
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    testing_dir = args.testing_dir
+    cloning_dir = args.cloning_dir
+    token: str = get_token()
+
+    if args.practice == ':all:':
+        practice_ids = practices.keys()
+    else:
+        practice_ids = [args.practice]
+    for practice_id in practice_ids:
+        print(f"Retrieving practice {practice_id}")
+        retrieve_practice(practice_id, cloning_dir, token)
