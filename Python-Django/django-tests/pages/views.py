@@ -19,7 +19,8 @@ counter: Counter = Counter()
 def index(request):
 
     pages = Page.objects.all()
-    return(render(request, 'pages/index.html', {'item_list': pages}))
+    return(render(request, 'pages/index.html',
+                  {'item_list': pages, 'count': counter.increment()}))
 
 def page(request, name):
 
@@ -44,6 +45,7 @@ def page(request, name):
             status = 404
         content_template = loader.get_template('pages/content.html')
         content_html = content_template.render({'page': name,
-                                                'form': content_form},
+                                                'form': content_form,
+                                                'count': counter.increment()},
                                                request)
         return(HttpResponse(content_html, status=status))

@@ -10,5 +10,8 @@
   <body>
     <h1>Django CMS</h1>
     {% block content %}{{ content }}{% endblock %}
+    <footer>
+      <hr>Pages viewed up to now: {{count}}
+    </footer>
   </body>
 </html>
