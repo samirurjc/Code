@@ -8,6 +8,8 @@ import argparse
 import csv
 import os
 
+import git
+
 practices = {
     "calculadora": {
         'repo': 'cursosweb/x-serv-13.6-calculadora',
@@ -63,15 +65,20 @@ def parse_args():
                         help="practice number (:all: to check all practices")
     parser.add_argument('--cloning_dir', default='retrieved',
                         help="directory where retrieved practices were cloned")
+    parser.add_argument('--pretty', action='store_true',
+                        help="directory where retrieved practices were cloned")
     args = parser.parse_args()
     return(args)
 
 def practice_student(cloning_dir, practice, student):
     "Features of the practice, as pushed by student"
 
-    if os.path.isdir(os.path.join(cloning_dir, practice, student)):
-#        print(f"{student} delivered {practice}")
-        return practice
+    dir = os.path.join(cloning_dir, practice, student)
+    if os.path.isdir(dir):
+        repo = git.Repo(dir)
+        commits = list(repo.iter_commits())
+        last_date = commits[0].committed_datetime.strftime("%Y-%m-%d")
+        return (practice, len(commits), last_date)
     else:
         return None
 
@@ -100,13 +107,22 @@ def main():
     args = parse_args()
     students = read_students(args.students)
     cloning_dir = args.cloning_dir
+    if args.pretty:
+        pretty = True
+    else:
+        pretty = False
     if args.practice == ':all:':
         practices_list = [practice for practice in practices]
     else:
         practices_list = [args.practice]
     for student in students:
         report = report_students(cloning_dir, practices_list, student)
-        print(f"{student}: {len(report)}, {report}")
+        if pretty:
+            print(f"{student}, {len(report)} practices (practice, commits, last commit):")
+            for repo in report:
+                print(f"  {repo}")
+        else:
+            print(f"{student}: {len(report)}, {report}")
 
 if __name__ == "__main__":
     main()
