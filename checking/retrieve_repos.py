@@ -6,6 +6,9 @@ Uses a CSV file with the list of students, with this format:
 "Usuario GitLab","Usuario Laboratorio",Usuario,"Nombre de usuario","Dirección de correo"
 * Usuario GitLab is the name used for GitLab repos
 * Usuario is the URJC user name
+
+Example ofhow to run the script:
+retrieve_repos.py --practice :all: --students ist-saro-2022.csv --cloning_dir ../../retrieved-2022
 """
 
 import argparse
@@ -38,9 +41,37 @@ practices = {
         'repo': 'cursosweb/xserv-contentapp',
         'repo_api': 'cursosweb%2Fxserv-contentapp'
     },
+    "django_cmsput": {
+        'repo': 'cursosweb/x-serv-15.6-django-cms-put',
+        'repo_api': 'cursosweb%2Fx-serv-15.6-django-cms-put'
+    },
+    "django_cmsusersput": {
+        'repo': 'cursosweb/x-serv-15.8-cmsusersput',
+        'repo_api': 'cursosweb%2Fx-serv-15.8-cmsusersput'
+    },
+    "django_cmspost": {
+        'repo': 'cursosweb/practicas/server/django-cms-post',
+        'repo_api': 'cursosweb%2Fpracticas%2Fserver%2Fdjango-cms-post'
+    },
+    "youtube": {
+        'repo': 'cursosweb/practicas/server/youtube-descarga',
+        'repo_api': 'cursosweb%2Fpracticas%2Fserver%2Fyoutube-descarga'
+    },
+    "django_youtube": {
+        'repo': 'cursosweb/practicas/server/django-youtube',
+        'repo_api': 'cursosweb%2Fpracticas%2Fserver%2Fdjango-youtube'
+    },
+    "django_cmscss2": {
+        'repo': 'cursosweb/practicas/server/django-cms-css-2',
+        'repo_api': 'cursosweb%2Fpracticas%2Fserver%2Fdjango-cms-css-2'
+    },
     "1": {
         'repo': 'cursosweb/mini-1-acortadora',
         'repo_api': 'cursosweb%2Fmini-1-acortadora'
+    },
+    "2": {
+        'repo': 'cursosweb/x-serv-18.2-practica2',
+        'repo_api': 'cursosweb%2Fx-serv-18.2-practica2'
     }
 }
 
@@ -74,7 +105,8 @@ def get_forks(repo: str, token: str = ''):
     return forks
 
 def clone(url, dir, token=''):
-    auth_url = url.replace('https://', f"https://Api Read Access:{token}@", 1)
+#    auth_url = url.replace('https://', f"https://Api Read Access:{token}@", 1)
+    auth_url = url.replace('https://', f"https://jesus.gonzalez.barahona:{token}@", 1)
     print("Cloning:", dir, auth_url)
     try:
         Repo.clone_from(auth_url, dir)
