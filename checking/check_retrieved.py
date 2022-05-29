@@ -54,6 +54,10 @@ practices = {
     "2": {
         'repo': 'cursosweb/x-serv-18.2-practica2',
         'repo_api': 'cursosweb%2Fx-serv-18.2-practica2'
+    },
+    "final": {
+        'repo': 'cursosweb/practicas/server/final-mispalabras',
+        'repo_api': 'cursosweb%2Fpracticas%2Fserver%2Ffinal-mispalabras'
     }
 }
 
