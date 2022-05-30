@@ -41,6 +41,10 @@ practices = {
         'repo': 'cursosweb/xserv-contentapp',
         'repo_api': 'cursosweb%2Fxserv-contentapp'
     },
+    "contentpostapp": {
+        'repo': 'cursosweb/X-Serv-17.4-ContentPostApp',
+        'repo_api': 'cursosweb%2FX-Serv-17.4-ContentPostApp'
+    },
     "django_cmsput": {
         'repo': 'cursosweb/x-serv-15.6-django-cms-put',
         'repo_api': 'cursosweb%2Fx-serv-15.6-django-cms-put'
@@ -119,10 +123,16 @@ def clone(url, dir, token=''):
 
 def read_csv(file):
     students = {}
-    with open(file, 'r', newline='') as cvsfile:
+    with open(file, 'r', newline='', encoding="utf-8") as cvsfile:
         rows = csv.DictReader(cvsfile)
         for row in rows:
-            students[row['Usuario GitLab']] = {
+            usuariogitlab = row['Usuario GitLab']
+            
+            # Corner case: some students start their username with @, for some reason
+            if usuariogitlab[0] == "@":
+                usuariogitlab = usuariogitlab[1:]
+
+            students[usuariogitlab] = {
                 'user': row['Nombre de usuario'],
                 'name': row['Usuario']
             }
@@ -193,7 +203,10 @@ def retrieve_practice(practice_id, cloning_dir, token):
             repos_found += 1
             if not args.no_clone:
                 dir = os.path.join(cloning_dir, practice_id, fork_data['path'])
-                clone(fork_data['url'], dir, token)
+                try:
+                    clone(fork_data['url'], dir, token)
+                except GitCommandError:
+                    pass
         # # Run tests in the cloned repo
         # print("About to run tests:", os.path.join(testing_dir, fork_data['path']))
         # run_tests(dir=os.path.join(testing_dir, fork_data['path']),

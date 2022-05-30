@@ -23,6 +23,10 @@ practices = {
         'repo': 'cursosweb/xserv-contentapp',
         'repo_api': 'cursosweb%2Fxserv-contentapp'
     },
+    "contentpostapp": {
+        'repo': 'cursosweb/X-Serv-17.4-ContentPostApp',
+        'repo_api': 'cursosweb%2FX-Serv-17.4-ContentPostApp'
+    },
     "django_cmsput": {
         'repo': 'cursosweb/x-serv-15.6-django-cms-put',
         'repo_api': 'cursosweb%2Fx-serv-15.6-django-cms-put'
@@ -98,10 +102,16 @@ def report_students(cloning_dir, practices_list, student):
 
 def read_students(file):
     students = {}
-    with open(file, 'r', newline='') as cvsfile:
+    with open(file, 'r', newline='', encoding="utf-8") as cvsfile:
         rows = csv.DictReader(cvsfile)
         for row in rows:
-            students[row['Usuario GitLab']] = {
+            usuariogitlab = row['Usuario GitLab']
+
+            # Corner case: some students start their username with @, for some reason
+            if usuariogitlab[0] == "@":
+                usuariogitlab = usuariogitlab[1:]
+
+            students[usuariogitlab] = {
                 'user': row['Nombre de usuario'],
                 'name': row['Usuario']
             }
