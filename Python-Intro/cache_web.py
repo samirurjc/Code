@@ -56,5 +56,5 @@ if __name__ == '__main__':
     print("Test Cache class")
     c = Cache()
     c.retrieve('http://gsyc.urjc.es/')
-    c.show('https://urjc.es/')
+    c.show('https://www.aulavirtual.urjc.es')
     c.show_all()
